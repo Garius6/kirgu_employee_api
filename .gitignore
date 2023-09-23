@@ -1,0 +1,6 @@
+__pycache__/
+.vscode/
+*.sqlite
+settings.json
+.env
+*_cache
