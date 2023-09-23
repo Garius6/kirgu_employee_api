@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from sqlalchemy.orm import Session
 from src.database.databese import SessionLocal
 
@@ -5,7 +6,25 @@ from ..schemas import UserCreate, User, WTAEvent, WTAEventCreate
 from ..database import models
 
 
-class MainRepository:
+class Repository(ABC):
+    @abstractmethod
+    def create_user(self, user: UserCreate) -> int:
+        pass
+
+    @abstractmethod
+    def get_users(self) -> list[User]:
+        pass
+
+    @abstractmethod
+    def create_wta_event(self, event: WTAEventCreate) -> int:
+        pass
+
+    @abstractmethod
+    def get_wta_events(self) -> list[WTAEvent]:
+        pass
+
+
+class MainRepository(Repository):
     def create_user(
         self,
         user: UserCreate,
