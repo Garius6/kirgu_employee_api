@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from sqlalchemy.orm import Session
-from src.database.databese import SessionLocal
+from ..database.databese import SessionLocal
 
 from ..schemas import UserCreate, User, WTAEvent, WTAEventCreate
 from ..database import models

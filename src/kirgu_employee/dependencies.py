@@ -1,4 +1,4 @@
-from src.database.databese import SessionLocal
+from .database.databese import SessionLocal
 
 
 def get_db():
