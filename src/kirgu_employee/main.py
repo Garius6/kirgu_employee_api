@@ -4,14 +4,10 @@ from fastapi.security import OAuth2PasswordRequestForm
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, status
 
-from kirgu_employee.database import models
-from kirgu_employee.database.databese import engine
 from kirgu_employee.dependencies import get_current_active_user
 from kirgu_employee.repositories.main_repository import MainRepository, Repository
 from kirgu_employee.schemas import Token, User, UserCreate, WTAEvent, WTAEventCreate
 from kirgu_employee.settings import settings
-
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title=settings.application_name)
 
@@ -20,6 +16,7 @@ app = FastAPI(title=settings.application_name)
 def create_user(
     user: UserCreate,
     repository: Annotated[Repository, Depends(MainRepository)],
+    current_active_user: Annotated[User, Depends(get_current_active_user)],
 ):
     return repository.create_user(user)
 
@@ -44,7 +41,7 @@ def create_event(
     return repository.create_wta_event(event, user_id)
 
 
-@app.get("/user/{user_id}/events/", response_model=list[WTAEvent])
+@app.get("/users/{user_id}/events/", response_model=list[WTAEvent])
 def get_events(
     user_id: int,
     repository: Repository = Depends(MainRepository),
@@ -71,7 +68,11 @@ async def login_for_access_token(
         minutes=settings.access_token_expire_minutes,
     )
     access_token = repository.create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={
+            "sub": user.username,
+            "id": user.id,
+        },
+        expires_delta=access_token_expires,
     )
     return {"access_token": access_token, "token_type": "bearer"}
 

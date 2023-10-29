@@ -85,7 +85,6 @@ class MainRepository(Repository):
     ):
         db_wta = models.WorkingTimeAccountingSystemEvent(
             user_id=user_id,
-            time=event.time,
             date=event.date,
         )  # type: ignore
         db.add(db_wta)

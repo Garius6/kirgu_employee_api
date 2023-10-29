@@ -34,6 +34,7 @@ def get_current_user(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=["HS256"])
         username: str = payload.get("sub")  # type: ignore
@@ -42,7 +43,6 @@ def get_current_user(
     except JWTError:
         raise credentials_exception
     user = repository.get_user(username=username)
-    print(f"found user {user.username}")
     if user is None:
         raise credentials_exception
     return user

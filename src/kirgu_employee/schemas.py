@@ -3,8 +3,7 @@ from pydantic import BaseModel
 
 
 class WTAEventBase(BaseModel):
-    date: datetime.date
-    time: datetime.time
+    date: datetime.datetime
 
 
 class WTAEventCreate(WTAEventBase):

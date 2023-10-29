@@ -1,4 +1,13 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Date, Time
+from sqlalchemy import (
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+    Boolean,
+    Date,
+    Time,
+    DateTime,
+)
 from sqlalchemy.orm import relationship
 from .databese import Base
 
@@ -23,7 +32,6 @@ class WorkingTimeAccountingSystemEvent(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("user.id"))
 
-    date = Column(Date, nullable=False)
-    time = Column(Time, nullable=False)
+    date = Column(DateTime, nullable=False)
 
     user = relationship("User", back_populates="wta_events")
